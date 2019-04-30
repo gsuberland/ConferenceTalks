@@ -1,0 +1,637 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/nettitude.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<img src="lib/img/nettitude.png" style="background: #fff" width="30%" />
+					<h1>Hardware Isn't Hard</h1>
+					<p><small>Graham Sutherland - Nettitude Research &amp; Innovation</small></p>
+				</section>
+				
+				<section>
+					<h2>whoami</h2>
+					<ul>
+						<li>Graham Sutherland</li>
+						<li>Senior Researcher @ Nettitude R&amp;I</li>
+						<li>Serial Securi-Tay Speaker</li>
+						<li>Electronics Tinkerer</li>
+						<li>Twitter: <a href="https://twitter.com/gsuberland" rel="noopener" target="blank">@gsuberland</a></li>
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Why hardware?</h1>
+				</section>
+				
+				<section>
+					<h2>Talk outline</h2>
+					<ul>
+						<li>Basic physics</li>
+						<li>Safety</li>
+						<li>Components</li>
+						<li>Diagrams and PCBs</li>
+						<li>Logic</li>
+						<li>Processors</li>
+						<li>Interfaces</li>
+						<li>Tools</li>
+						<li>Resources</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Physics</h1>
+				</section>
+				
+				<section>
+					<h2>Definitions</h2>
+					<p><strong>V</strong> - Voltage (Volts, V)</p>
+					<p><strong>I</strong> - Current (Amps, A)</p>
+					<p><strong>R</strong> - Resistance (Ohms, &ohm;)</p>
+					<p><strong>P</strong> - Power (Watts, W)</p>
+				</section>
+				
+				<section>
+					<img src="lib/img/ohms_law_cartoon.jpg" />
+				</section>
+
+				<section>
+					<h2>Ohm's Law</h2>
+					<p><strong>I = V / R</strong></p>
+					<p><strong>R = V / I</strong></p>
+					<p><strong>V = I * R</strong></p>
+				</section>
+				
+				<section>
+					<h2>Power</h2>
+					<p><strong>P = V * I</strong></p>
+					<p><strong>I = P / V</strong></p>
+					<p><strong>V = P / I</strong></p>
+					<p><strong>P = I<sup>2</sup> * R</strong></p>
+				</section>
+				
+				<section>
+					<h1>Safety</h1>
+				</section>
+				
+				<section>
+					<h2>Beware this advice</h2>
+					<img src="lib/img/spongebob_amps.jpg" />
+				</section>
+				
+				<section>
+					<h2>What's more dangerous?</h2>
+					<img src="lib/img/power_supply_comparison.jpg" />
+				</section>
+				
+				<section>
+					<h2>Electric Shocks</h2>
+					<ul>
+						<li>Human body resistance: 500-1000&ohm;<sup>*</sup></li>
+						<li>Lethal current: 0.1-0.2A (100-200mA)</li>
+						<li>Ohm's law: V = I * R</li>
+						<li>V = 0.1A * 500&ohm; = <strong>50V</strong></li>
+					</ul>
+					<p><small style="font-size: 40%; color: #fff;">* Worst case model of wet body or broken skin; dry body may have resistance up to 100k&ohm;</small></p>
+				</section>
+				
+				<section>
+					<h2>Electric Shocks</h2>
+					<ul>
+						<li>Dry human body resistance: 10-100k&ohm;</li>
+						<li>Lethal current: 0.1-0.2A (100-200mA)</li>
+						<li>UK Mains Voltage: 230V</li>
+						<li>Ohm's law: I = V / R</li>
+						<li>I = 230V / 10000&ohm; = <strong>0.023A (23mA)</strong></li>
+					</ul>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Approximate <br />Shock Thresholds</h2>
+						<table style="font-size: 75%">
+							<tr>
+								<th>Affect</th>
+								<th>AC Current</th>
+								<th>AC Voltage</th>
+								<th>DC Current</th>
+								<th>DC Voltage</th>
+							</tr>
+							<tr>
+								<td>Slight sensation</td>
+								<td>1mA</td>
+								<td>0.5V</td>
+								<td>5mA</td>
+								<td>2.5V</td>
+							</tr>
+							<tr>
+								<td>Minor shock</td>
+								<td>2mA</td>
+								<td>1V</td>
+								<td>8mA</td>
+								<td>4V</td>
+							</tr>
+							<tr>
+								<td>Painful shock</td>
+								<td>7mA</td>
+								<td>3.5V</td>
+								<td>50mA</td>
+								<td>25V</td>
+							</tr>
+							<tr>
+								<td>Muscle contraction</td>
+								<td>12mA</td>
+								<td>6V</td>
+								<td>65mA</td>
+								<td>32V</td>
+							</tr>
+							<tr>
+								<td>Breathing trouble</td>
+								<td>20mA</td>
+								<td>10V</td>
+								<td>75mA</td>
+								<td>37.5V</td>
+							</tr>
+							<tr>
+								<td>Fibrillation</td>
+								<td>100mA</td>
+								<td>50V</td>
+								<td>500mA</td>
+								<td>250V</td>
+							</tr>
+						</table>
+						<p><small style="font-size: 40%; color: #fff;">
+						Values expressed are subject to variation and are not intended to be guaranteed safety advice.<br />
+						Experimental verification of these numbers may lead to death. Avoid wherever possible.<br />
+						AC voltage at 60Hz. Bodily resistance assumed to be 500&ohm; (wet body / broken skin)<br />
+						Data source: Health and Safety Manual, LBNL/PUB-3000.
+						</small></p>
+					</section>
+				</section>
+				
+				<section>
+					<h1>Voltage usually decides your fate</h1>
+				</section>
+				
+				<section>
+					<h1>Components</h1>
+				</section>
+				
+				<section>
+					<h1>Passives</h1>
+					<img src="lib/img/smd_resistors.jpg" width="25%" />
+					<img src="lib/img/smd_capacitor.jpg" width="25%" />
+					<img src="lib/img/aluminium_electrolytic.jpg" width="25%" />
+				</section>
+				
+				<section>
+					<h2>Resistor</h2>
+					<p>
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 80 22" width="200">
+							<path d="M10 15 l15 0 l2.5 -5 l5 10 l5 -10 l5 10 l5 -10 l5 10 l2.5 -5 l15 0" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+						</svg>
+					</p>
+					<ul>
+						<li>Resistance, ohms (&ohm;)</li>
+						<li>Limits current</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Capacitor</h2>
+					<p>
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 80 22" width="200">
+							<path d="M10 15 37 15" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M41.5 15 70 15" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M41.5 7.5 41.5 22.5" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M37 7.5 37 22.5" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+						</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 80 22" width="200">
+							<path d="M10 15 36 15" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M42.5 15 70 15" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<rect x="36.0" y="8" width="2" height="13.5" stroke="black" stroke-width="1" stroke-alignment="inner" fill="black"></rect>
+							<rect x="41.0" y="8" width="2" height="13.5" stroke="black" stroke-width="1" stroke-alignment="inner" fill="none"></rect>
+							<path d="M45 8 50 8" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M47.5 5.5 47.5 10.5" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+						</svg>
+					</p>
+					<ul>
+						<li>Capacitance, farads (F)</li>
+						<li>Stores charge</li>
+						<li>Ceramic (MLCC) - nonpolar, small capacitance</li>
+						<li>Electrolytic - polar, big capacitance</li>
+						<li>Not perfectly conductive - ESR</li>
+						<li>Other types: tantalum, alupoly, film</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Inductors</h1>
+				</section>
+				
+				<section>
+					<h2>Actives</h2>
+					<ul>
+						<li>Transistors</li>
+						<li>Opamps</li>
+						<li>Logic gates</li>
+						<li>...</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Diodes</h2>
+					<p>
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 80 24" width="300">
+							<path d="M10 15 35 15" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M45 15 70 15" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M35 7.5 35 22.5" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M45 7.5 45 22.5" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M35 7.5 45 15" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+							<path d="M35 22.5 45 15" stroke="black" stroke-width="1" stroke-linejoin="bevel" fill="none"></path>
+						</svg>
+					</p>
+					<p>... and LEDs!</p>
+					<p><small>Passive? Active?</small></p>
+				</section>
+				
+				<section>
+					<h1>Circuit Boards</h1>
+				</section>
+				
+				<section>
+					<img class="stretch" src="lib/img/complex_pcb.jpg" />
+				</section>
+				
+				<section>
+					<img class="stretch" src="lib/img/graphics_card.jpg" />
+				</section>
+				
+				<section>
+					<h2>Designators</h2>
+					<p>Reference designator or "refdes"</p>
+					<table style="font-size: 50%">
+						<tr>
+							<th>Refdes</th><th>Component</th>
+						</tr>
+						<tr>
+							<td>R</td><td>Resistor</td>
+						</tr>
+						<tr>
+							<td>C</td><td>Capacitor</td>
+						</tr>
+						<tr>
+							<td>L</td><td>Inductor</td>
+						</tr>
+						<tr>
+							<td>Q</td><td>Transistor</td>
+						</tr>
+						<tr>
+							<td>D</td><td>Diode (or LED)</td>
+						</tr>
+						<tr>
+							<td>F</td><td>Fuse</td>
+						</tr>
+						<tr>
+							<td>U</td><td>Integrated Circuit (IC)</td>
+						</tr>
+						<tr>
+							<td>Y / XTAL</td><td>Crystal</td>
+						</tr>
+						<tr>
+							<td>J</td><td>Jack or Connector</td>
+						</tr>
+					</table>
+				</section>
+				
+				<section>
+					<img class="stretch" src="lib/img/board_refdes.jpg" />
+				</section>
+				
+				<section>
+					<h1>Circuit Diagrams</h1>
+				</section>
+				
+				<section>
+					<img class="stretch" src="lib/img/xkcd_circuit_diagram.png" style="margin-bottom: 0; padding-bottom: 0" />
+					<p style="padding-top: 0; margin-top: 0"><small style="font-size: 50%; padding: 0; margin: 0;">source: https://xkcd.com/730/</small></p>
+				</section>
+				
+				<section>
+					<img class="stretch" src="lib/img/simple_circuit1.png" />
+				</section>
+				
+				<section>
+					<img class="stretch" src="lib/img/simple_circuit2.png" />
+				</section>
+				
+				<section>
+					<h1>Logic</h1>
+				</section>
+				
+				<section>
+					<h2>Logic</h2>
+					<table>
+						<tr>
+							<th>Value</th><th>Voltage</th>
+						</tr>
+						<tr>
+							<td>0</td><td>low</td>
+						</tr>
+						<tr>
+							<td>1</td><td>high</td>
+						</tr>
+					</table>
+				</section>
+				
+				<section>
+					<h2>Logic</h2>
+					<table>
+						<tr>
+							<th>Value</th><th>Voltage</th>
+						</tr>
+						<tr>
+							<td>0</td><td>0V</td>
+						</tr>
+						<tr>
+							<td>1</td><td>+V</td>
+						</tr>
+					</table>
+				</section>
+				
+				<section>
+					<h2>Logic Levels</h2>
+					<table>
+						<tr>
+							<td>+5V</td><td>+3.3V</td><td>+1.8V</td>
+						</tr>
+					</table>
+				</section>
+				
+				<section>
+					<img class="stretch" src="lib/img/scope_5v_logic.png" />
+				</section>
+				
+				<section>
+					<img class="stretch" src="lib/img/scope_3v3_logic.png" />
+				</section>
+				
+				<section>
+					<h2>Don't blow up your hardware</h2>
+					<table>
+						<tr>
+							<th>Hardware</th><th>Logic Level</th>
+						</tr>
+						<tr>
+							<td>Arduino Uno</td><td>5V</td>
+						</tr>
+						<tr>
+							<td>Arduino Mega</td><td>5V</td>
+						</tr>
+						<tr>
+							<td>Arduino Due</td><td>3.3V</td>
+						</tr>
+						<tr>
+							<td>Raspberry Pi</td><td>3.3V</td>
+						</tr>
+						<tr>
+							<td>ESP8266 / ESP32</td><td>3.3V</td>
+						</tr>
+						<tr>
+							<td>Teensy</td><td>3.3V (5V tolerant)</td>
+						</tr>
+					</table>
+				</section>
+				
+				<section>
+					<img class="stretch" style="border: none; background: none; padding: 10pt" src="lib/img/logic_gates.png" />
+				</section>
+				
+				<section>
+					<h2>Clocks</h2>
+					<img class="stretch" src="lib/img/clock_ticks.png" />
+				</section>
+				
+				<section>
+					<h1>Processors</h1>
+				</section>
+				
+				<section>
+					<h2>Processors</h2>
+					<ul>
+						<li>Microprocessors</li>
+						<li>Microcontrollers</li>
+						<li>Programmable Logic</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Microprocessors</h2>
+					<ul>
+						<li>Fetch instructions</li>
+						<li>Decode instructions</li>
+						<li>Execute instructions</li>
+						<li>Use external memory</li>
+						<li>Use external peripherals</li>
+						<li>Example: Zilog Z80</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Microcontrollers</h2>
+					<ul>
+						<li>Contain a microprocessor</li>
+						<li>Contain memory</li>
+						<li>Contain program flash</li>
+						<li>Internal peripherals</li>
+						<li>Standalone / general purpose</li>
+						<li>Example: Atmel ATmega328P</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Programmmable Logic</h2>
+					<ul>
+						<li>Array of configurable logic gates</li>
+						<li>Interconnected logic, not instructions</li>
+						<li>Used for specialist applications</li>
+						<li>Types: PAL, PLA, CPLD, FPGA</li>
+						<li>Can implement MPUs / MCUs</li>
+						<li>Example: Lattice iCE40 FPGA</li>
+						<li>Example application: RISC-V</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Interfaces</h1>
+				</section>
+				
+				<section>
+					<h2>GPIO</h2>
+					<pre style="background-color: white; padding: 10pt">
+void setup() {
+  pinMode(13, OUTPUT);    // sets the digital pin 13 as output
+}
+
+void loop() {
+  digitalWrite(13, HIGH); // sets the digital pin 13 on
+  delay(1000);            // waits for a second
+  digitalWrite(13, LOW);  // sets the digital pin 13 off
+  delay(1000);            // waits for a second
+}
+</pre>
+				</section>
+				
+				<section>
+					<h2>UART</h2>
+					<pre style="background-color: white; padding: 10pt">
+void setup() {
+  Serial.begin(9600);  // 9600 baud (bytes per second)
+}
+
+void loop() {
+  Serial.println("Hello world!");  // print text to UART
+}
+</pre>
+					<img class="stretch" src="lib/img/uart_diagram.png" style="background: none; border: none;" />
+				</section>
+				
+				<section>
+					<h2>RS232</h2>
+					<img class="stretch" src="lib/img/rs232_scope.png" />
+				</section>
+				
+				<section>
+					<h2>SPI</h2>
+					<img class="stretch" src="lib/img/spi_bus.png" />
+				</section>
+				
+				<section>
+					<h2>I2C</h2>
+					<img class="stretch" src="lib/img/i2c_bus.png" />
+				</section>
+				
+				<section>
+					<h1>JTAG</h1>
+				</section>
+				
+				<section>
+					<h1>ISP / ICSP</h1>
+				</section>
+				
+				<section>
+					<h1>Tools</h1>
+				</section>
+				
+				<!-- 
+					BusPirate / HydraBus / Glasgow, Arduino & SBCs, ChipWhisperer, HackRF) -->
+					
+				<section>
+					<h2>Measurement</h2>
+					<ul>
+						<li>Multimeter</li>
+						<li>Oscilloscope</li>
+						<ul>
+							<li>DS212</li>
+							<li>Open Workbench Logic Sniffer</li>
+							<li>PicoScope</li>
+							<li>Old CRT scopes!</li>
+						</ul>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Interfaces</h2>
+					<ul>
+						<li>FT232H Boards</li>
+						<li>BusPirate</li>
+						<li>HydraBus</li>
+						<li>Glasgow</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Development</h2>
+					<ul>
+						<li>Arduino</li>
+						<li>NodeMCU</li>
+						<li>Raspberry Pi / SBCs</li>
+						<li>Parallax Propeller</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Radio</h2>
+					<ul>
+						<li>RTL-SDR</li>
+						<li>HackRF</li>
+						<li>BladeRF</li>
+						<li>USRP</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Conclusion</h1>
+				</section>
+				
+				<section>
+					<h1>END</h1>
+				</section>
+				
+				<section>
+					<ul style="font-size: 0.7em">
+						<li><strong>Parts:</strong> Farnell, CPC, Mouser, Digi-Key, RS, BitsBox, eBay, AliExpress</li>
+						<li><strong>Custom PCBs:</strong> PCBShopper (I like Elecrow and JLCPCB)</li>
+						<li><strong>Twitter:</strong> @whitequark @scanline @marcan42 @_MG_ @GlytchTech @hedgeberg @esden @securelyfitz @cybergibbons @tinyfpga @GregDavill @fpga_dave</li>
+						<li><strong>YouTube:</strong> bigclivedotcom | mikeselectricstuff | scanlime | Robert Feranec | electronupdate | Marco Reps | Robert Baruch | Colin O'Flynn</li>
+						<li><strong>Q&amp;A:</strong> Electronics StackExchange | ##electronics on Freenode IRC</li>
+						<li><strong>Books:</strong> Art of Electronics | Practical Electronics for Inventors</li>
+						<li><strong>Formal:</strong> Coursera - Introduction to Electronics (Georgia Tech)</li>
+					</ul>
+				</section>
+				
+				
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				],
+				progress: true,
+				history: true,
+			});
+		</script>
+	</body>
+</html>
